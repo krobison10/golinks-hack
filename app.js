@@ -10,6 +10,9 @@ const gitHubToken = process.env.GITHUB_TOKEN;
 
 axios.defaults.headers.common['Authorization'] = `token ${gitHubToken}`;
 
+app.get('/', (request, response) => {
+    response.send("Welcome, please access the '/stats' endpoint with the necessary parameters");
+});
 
 app.get('/stats', (request, response, next) => {
     if(!request.query.username) {
@@ -25,7 +28,6 @@ app.get('/stats', (request, response, next) => {
     const url = `https://api.github.com/users/${request.query.username}/repos`
     try {
         const res = await axios.get(url);
-        console.log(res);
         request.repos = res.data.map(entry => Object.assign({}, entry));
         next();
     } catch(err) {
