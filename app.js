@@ -2,6 +2,8 @@ require('dotenv').config();
 
 const express = require('express');
 const app = express();
+const cors = require('cors'); 
+
 const port = process.env.PORT || 3000;
 
 const axios = require('axios');
@@ -9,6 +11,8 @@ const axios = require('axios');
 const gitHubToken = process.env.GITHUB_TOKEN;
 
 axios.defaults.headers.common['Authorization'] = `token ${gitHubToken}`;
+
+app.use(cors());
 
 app.get('/', (request, response) => {
     response.send("Welcome, please access the '/stats' endpoint with the necessary parameters");
@@ -36,7 +40,7 @@ app.get('/stats', (request, response, next) => {
         });
     }
 }, (request, response, next) => {
-    //filter for forked
+    //filter for non-forked if necessary
     if(request.query.forked === "false") {
         request.repos = request.repos.filter(entry => entry.fork === false);
     }
