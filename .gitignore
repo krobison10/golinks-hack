@@ -1,0 +1,27 @@
+# Logs
+logs
+*.log
+
+# Node.js
+node_modules/
+npm-debug.log*
+
+# Built output
+dist/
+build/
+
+# Environment variables
+.env
+
+# IDE/Editor specific
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+
+# Testing
+coverage/
+
+# Miscellaneous
+.DS_Store
+Thumbs.db
