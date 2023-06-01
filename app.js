@@ -28,11 +28,18 @@ app.get('/stats', (request, response, next) => {
         next()
     }
 }, async (request, response, next) => {
-    //Get all repos
-    const url = `https://api.github.com/users/${request.query.username}/repos`
+    let repos = [];
+    let page = 1;
+
     try {
-        const res = await axios.get(url);
-        request.repos = res.data.map(entry => Object.assign({}, entry));
+        while (true) {
+            const url = `https://api.github.com/users/${request.query.username}/repos?per_page=100&page=${page}`;
+            const res = await axios.get(url);
+            if (res.data.length === 0) break;
+            repos = repos.concat(res.data);
+            page++;
+        }
+        request.repos = repos.map(entry => Object.assign({}, entry));
         next();
     } catch(err) {
         response.status(500).send({
